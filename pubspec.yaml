@@ -1,0 +1,8 @@
+name: isakhi
+version: 0.0.1
+author: Dvergar
+description: Simple ECS for dart
+environment:
+  sdk: '>=2.0.0 <3.0.0'
+dev_dependencies:
+  test: any
