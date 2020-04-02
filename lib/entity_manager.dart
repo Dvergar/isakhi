@@ -36,10 +36,14 @@ class EntityManager {
   int ids = 0;
 
   List<EntitySet> entitySets = List();
+  List<Entity> entities = List();
+  List<Entity> destroyedEntities = List();
 
   createEntity() {
     var entityId = ids++;
-    return Entity(entityId);
+    var entity = Entity(entityId);
+    entities.add(entity);
+    return entity;
   }
 
   destroyEntity(Entity entity) {
@@ -51,6 +55,8 @@ class EntityManager {
         }
       }
     }
+
+    destroyedEntities.add(entity);
   }
 
   addComponent(Entity entity, Component instance) {
@@ -80,6 +86,12 @@ class EntityManager {
 
   EntitySet getEntitySet(List<Type> code) {
     var entitySet = EntitySet(this, code.toSet());
+
+    for (var entity in entities) {
+      if (entitySet.code.containsAll(entity.code)) {
+        entitySet._adds.add(entity);
+      }
+    }
     entitySets.add(entitySet);
     return entitySet;
   }
@@ -92,14 +104,12 @@ class EntityManager {
       }
     }
   }
+
+  destroyMarkedEntities() {
+    for (var entity in destroyedEntities) {
+      entities.remove(entity);
+    }
+  }
 }
 
 abstract class Component {}
-
-abstract class System {
-  EntityManager em;
-
-  System(this.em);
-
-  loop();
-}

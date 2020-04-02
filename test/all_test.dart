@@ -69,6 +69,18 @@ void main() {
     expect(entitySet2.removes.length, 1);
   });
 
+  test('EntitySet should grab all the entities if entities already exists', () {
+    var em = EntityManager();
+    var entity = em.createEntity();
+    var pos = PositionComponent(1, 2);
+    em.addComponent(entity, pos);
+
+    var entitySet = em.getEntitySet([PositionComponent]);
+    entitySet.applyChanges();
+
+    expect(entitySet.adds.length, 1);
+  });
+
   // SYSTEM BEHAVIOUR
   var em = EntityManager();
   var positionSystem = PositionSystem(em);
@@ -97,11 +109,13 @@ class NameComponent implements Component {
   NameComponent(this.text);
 }
 
-class PositionSystem extends System {
+class PositionSystem {
   EntitySet positionEntitySet;
+  EntityManager em;
 
-  PositionSystem(EntityManager em) : super(em) {
-    this.positionEntitySet = em.getEntitySet([PositionComponent, NameComponent]);
+  PositionSystem(EntityManager em) {
+    this.positionEntitySet =
+        em.getEntitySet([PositionComponent, NameComponent]);
   }
 
   loop() {
