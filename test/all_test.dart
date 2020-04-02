@@ -101,7 +101,7 @@ class PositionSystem extends System {
   EntitySet positionEntitySet;
 
   PositionSystem(EntityManager em) : super(em) {
-    this.positionEntitySet = em.getEntitySet([PositionComponent]);
+    this.positionEntitySet = em.getEntitySet([PositionComponent, NameComponent]);
   }
 
   loop() {
