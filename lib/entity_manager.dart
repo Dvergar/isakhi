@@ -35,9 +35,9 @@ class Entity {
 class EntityManager {
   int ids = 0;
 
-  List<EntitySet> entitySets = List();
-  List<Entity> entities = List();
-  List<Entity> destroyedEntities = List();
+  List<EntitySet> entitySets = [];
+  List<Entity> entities = [];
+  List<Entity> destroyedEntities = [];
 
   createEntity() {
     var entityId = ids++;
